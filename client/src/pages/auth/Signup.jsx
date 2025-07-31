@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import { useContext, useState } from "react";
 import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 
 const Signup = () => {
+  const { handleUserSignup } = useContext(UserContext);
   const [form, setForm] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    role: "seeker",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,16 +24,16 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Optional: Add validation such as password === confirmPassword here
-
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setForm({ name: "", email: "", password: "", confirmPassword: "" });
-    setShowPassword(false);
-    setShowConfirmPassword(false);
+    setIsLoading(true);
+    const success = await handleUserSignup(form);
+    setIsLoading(false);
+    if (success) {
+      setForm({ username: "", email: "", password: "", role: "seeker" });
+      setShowPassword(false);
+      navigate("/login");
+    }
   };
 
   return (
@@ -48,9 +51,7 @@ const Signup = () => {
           </span>
         </h2>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name Field */}
           <div>
             <label
               htmlFor="name"
@@ -61,11 +62,11 @@ const Signup = () => {
             <div className="relative">
               <User className="absolute left-3 top-4 w-5 h-5 text-gray-400 pointer-events-none" />
               <input
-                id="name"
-                name="name"
+                id="username"
+                name="username"
                 type="text"
                 required
-                value={form.name}
+                value={form.username}
                 onChange={handleChange}
                 placeholder="Your full name"
                 className="w-full pl-10 pr-4 py-3 rounded border border-gray-200 focus:border-green-600 focus:outline-none transition"
@@ -73,7 +74,6 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Email Field */}
           <div>
             <label
               htmlFor="email"
@@ -97,7 +97,6 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Password Field */}
           <div>
             <label
               htmlFor="password"
@@ -140,6 +139,8 @@ const Signup = () => {
             <select
               id="role"
               name="role"
+              onChange={handleChange}
+              value={form.role}
               className="
       block w-full px-4 py-3 rounded border border-gray-300 text-gray-700
       focus:border-green-600 focus:ring-2 focus:ring-green-300 focus:outline-none
@@ -156,17 +157,15 @@ const Signup = () => {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-3 rounded font-semibold hover:bg-green-700 transition"
+            disabled={isLoading}
+            className={`w-full py-3 rounded font-semibold transition ${
+              isLoading
+                ? "bg-green-300 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700 text-white"
+            }`}
           >
-            Sign Up
+            {isLoading ? "Signing up..." : "Sign Up"}
           </button>
-
-          {/* Submission feedback message */}
-          {submitted && (
-            <div className="text-center mt-4 text-green-600 font-semibold">
-              Thank you for signing up! (Demo)
-            </div>
-          )}
         </form>
 
         <p className="text-center mt-8 text-gray-600">

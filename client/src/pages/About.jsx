@@ -35,7 +35,6 @@ const About = () => {
           empowering and safe.
         </p>
 
-        {/* Stats */}
         <div className="flex flex-wrap items-center justify-center gap-8 my-8">
           <div className="flex flex-col items-center">
             <span className="text-3xl font-extrabold text-green-600">
@@ -57,7 +56,6 @@ const About = () => {
           </div>
         </div>
 
-        {/* Why Choose Us with Lucide Icons */}
         <h3 className="text-2xl font-bold text-green-700 mt-10 mb-6">
           Why Choose FindJob?
         </h3>
@@ -76,10 +74,9 @@ const About = () => {
           ))}
         </div>
 
-        {/* Illustration */}
         <div className="mt-12 flex flex-col items-center">
           <img
-            src="https://cdni.iconscout.com/illustration/premium/thumb/job-search-4483978-3725422.png"
+            src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-image-icon-default-avatar-profile-icon-social-media-user-vector-image-209162840.jpg"
             alt="FindJob Team"
             className="w-44 md:w-60 rounded-xl mx-auto shadow-md mb-3"
             loading="lazy"

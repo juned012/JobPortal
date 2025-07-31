@@ -6,25 +6,27 @@ export const userSignup = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
 
-    const user = await UserModel.findOne({ email });
+    const existingUser = await UserModel.findOne({ email });
 
-    if (user) {
+    if (existingUser) {
       return res.status(409).json({ message: "User already exists" });
     }
-    const hashPassword = await bcrypt.hash(password, 10);
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new UserModel({
       username,
       email,
-      password: hashPassword,
+      password: hashedPassword,
       role,
     });
 
     await newUser.save();
 
-    res.status(201).json({ message: "Singup successfully" });
+    res.status(201).json({ success: true, message: "Signup successfully" });
   } catch (error) {
-    res.status(401).json({ message: "Error during singup" });
+    console.error("Signup error:", error);
+    res.status(500).json({ success: false, message: "Error during signup" });
   }
 };
 
@@ -34,14 +36,12 @@ export const userLogin = async (req, res) => {
 
     const user = await UserModel.findOne({ email });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    const isMatch = user && (await bcrypt.compare(password, user.password));
 
-    const isMatchPassword = await bcrypt.compare(password, user.password);
-
-    if (!isMatchPassword) {
-      return res.status(404).json({ message: "Invalid credentials" });
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid email or password" });
     }
 
     const token = jwt.sign(
@@ -50,8 +50,11 @@ export const userLogin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ message: "Login successful", token });
+    res
+      .status(200)
+      .json({ success: true, message: "Login successful", token, user });
   } catch (error) {
-    res.status(401).json({ message: "Error during singup" });
+    console.error("Login error:", error);
+    res.status(500).json({ success: false, message: "Error during login" });
   }
 };

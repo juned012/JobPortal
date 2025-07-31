@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import { useContext, useState } from "react";
 import { Lock, Eye, EyeOff, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
+  const { handleUserLogin, user } = useContext(UserContext);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
-    remember: false,
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -19,14 +23,20 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    // You'd normally handle login logic here
+    setIsLoading(true);
 
-    setTimeout(() => setSubmitted(false), 3000);
-    setForm({ email: "", password: "", remember: false });
-    setShowPassword(false);
+    const success = await handleUserLogin(form);
+
+    if (success) {
+      setForm({ email: "", password: "" });
+      setShowPassword(false);
+
+      navigate("/");
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -44,7 +54,6 @@ const Login = () => {
           </span>
         </h2>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
@@ -87,7 +96,7 @@ const Login = () => {
                 onChange={handleChange}
                 placeholder="Your password"
                 className="w-full pl-10 pr-10 py-3 rounded border border-gray-200 
-                  focus:border-green-600 focus:outline-none transition"
+                 focus:border-green-600 focus:outline-none transition"
                 autoComplete="current-password"
               />
               <button
@@ -107,20 +116,17 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-3 rounded font-semibold hover:bg-green-700 transition"
+            disabled={isLoading}
+            className={`w-full py-3 rounded font-semibold transition ${
+              isLoading
+                ? "bg-green-300 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700 text-white"
+            }`}
           >
-            Log In
+            {isLoading ? "Logging in..." : "Login"}
           </button>
-
-          {/* Submission feedback message */}
-          {submitted && (
-            <div className="text-center mt-4 text-green-600 font-semibold">
-              Login submitted! (Demo)
-            </div>
-          )}
         </form>
 
-        {/* Sign up link */}
         <p className="text-center mt-8 text-gray-600">
           Don’t have an account?{" "}
           <Link

@@ -4,7 +4,6 @@ import authorizeRoles from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-//only admin can access this route
 router.get("/admin", verifyToken, authorizeRoles("admin"), (req, res) => {
   res.json({ message: "Welcome admin" });
 });

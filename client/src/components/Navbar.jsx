@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { UserContext } from "./../context/UserContext";
 
 const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   const navLinkClass = ({ isActive }) =>
     isActive
@@ -38,18 +41,24 @@ const Navbar = () => {
               Contact
             </NavLink>
             <div className="space-x-2">
-              <Link
-                to="/login"
-                className="ml-4 text-gray-600 border-2 border-gray-100 px-4 py-2 rounded hover:bg-gray-50 transition"
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="ml-2 bg-green-600 text-white px-4 py-2 rounded font-semibold shadow hover:bg-green-700 transition"
-              >
-                Create Account
-              </Link>
+              {user ? (
+                <p>{user.username}</p>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="ml-4 text-gray-600 border-2 border-gray-100 px-4 py-2 rounded hover:bg-gray-50 transition"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="ml-2 bg-green-600 text-white px-4 py-2 rounded font-semibold shadow hover:bg-green-700 transition"
+                  >
+                    Create Account
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 

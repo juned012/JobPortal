@@ -9,10 +9,15 @@ import CompanyDetailPage from "./pages/CompanyDetailPage";
 import Companies from "./pages/Companies";
 import Jobs from "./pages/Jobs";
 import Footer from "./components/Footer";
+import { Toaster } from "react-hot-toast";
+import ScrollToTop from "./components/ScrollToTop";
+
 const App = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

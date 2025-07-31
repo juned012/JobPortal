@@ -8,7 +8,6 @@ const CompanyCard = ({
 }) => {
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all w-full max-w-md mx-auto p-6 flex flex-col gap-4 relative">
-      {/* Top Right Logo */}
       <div className="absolute top-4 right-4">
         <img
           src={logo}
@@ -17,12 +16,10 @@ const CompanyCard = ({
         />
       </div>
 
-      {/* Company Name */}
       <div>
         <h3 className="text-xl font-bold text-gray-900">{company}</h3>
       </div>
 
-      {/* Location & Remote */}
       <div className="text-sm text-gray-600 flex items-center gap-1">
         <MapPin className="w-4 h-4" />
         {location}
@@ -33,7 +30,6 @@ const CompanyCard = ({
         )}
       </div>
 
-      {/* View Profile Button */}
       <div className="flex items-center gap-2 cursor-pointer text-sm text-gray-700 bg-gray-50 px-3 py-2 rounded-md w-max hover:bg-gray-100 transition">
         View Profile
       </div>

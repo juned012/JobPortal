@@ -8,7 +8,7 @@ const jobs = [
     remote: true,
     salary: "25k/month - 35k/month",
     postedAgo: "2 Weeks Ago",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Myntra_logo.png/600px-Myntra_logo.png",
+    logo: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-image-icon-default-avatar-profile-icon-social-media-user-vector-image-209162840.jpg",
   },
   {
     company: "Zomato",
@@ -17,7 +17,7 @@ const jobs = [
     remote: false,
     salary: "30k/month - 40k/month",
     postedAgo: "1 Week Ago",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Zomato_Logo.svg/512px-Zomato_Logo.svg.png",
+    logo: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-image-icon-default-avatar-profile-icon-social-media-user-vector-image-209162840.jpg",
   },
   {
     company: "Swiggy",
@@ -26,7 +26,7 @@ const jobs = [
     remote: true,
     salary: "40k/month - 50k/month",
     postedAgo: "5 Days Ago",
-    logo: "https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg",
+    logo: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-image-icon-default-avatar-profile-icon-social-media-user-vector-image-209162840.jpg",
   },
 ];
 
