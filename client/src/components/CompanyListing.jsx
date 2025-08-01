@@ -31,11 +31,16 @@ const companies = [
 
 const CompanyListing = () => {
   return (
-    <section className=" bg-gradient-to-tr from-green-50 via-white to-green-100 pt-25 pb-20 px-4">
+    <section className=" bg-gradient-to-tr from-green-50 via-white to-green-100 pt-12 pb-20 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-extrabold text-green-700 text-center mb-10">
-          Companies
-        </h1>
+        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center">
+          <span
+            className="bg-gradient-to-r from-green-600 via-green-400
+           to-green-600 bg-clip-text text-transparent"
+          >
+            Companies
+          </span>
+        </h2>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {companies.map((company) => (
             <CompanyCard key={company.id} {...company} />

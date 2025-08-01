@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { Lock, Eye, EyeOff, Mail } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
-  const { handleUserLogin, user } = useContext(UserContext);
+  const { handleUserLogin } = useContext(UserContext);
 
   const [form, setForm] = useState({
     email: "",
@@ -12,8 +12,6 @@ const Login = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,15 +25,12 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const success = await handleUserLogin(form);
+    const { user } = await handleUserLogin(form);
 
-    if (success) {
+    if (user) {
       setForm({ email: "", password: "" });
       setShowPassword(false);
-
-      navigate("/");
     }
-
     setIsLoading(false);
   };
 

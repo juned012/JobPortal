@@ -54,7 +54,7 @@ const Signup = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
-              htmlFor="name"
+              htmlFor="username"
               className="block mb-1 font-medium text-gray-700"
             >
               Name

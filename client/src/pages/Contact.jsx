@@ -15,7 +15,7 @@ const Contact = () => {
   };
 
   return (
-    <section className="overflow-hidden min-h-[80vh] bg-gradient-to-tr from-green-50 via-white to-green-100 pt-32 pb-20 flex items-center justify-center">
+    <section className="overflow-hidden min-h-[80vh] bg-gradient-to-tr from-green-50 via-white to-green-100 pt-12 pb-20 flex items-center justify-center">
       <div className="max-w-xl mx-auto w-full bg-white rounded-xl transition border border-gray-100 p-8 md:p-12">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           <span className="bg-gradient-to-r from-green-600 via-green-400 to-green-600 bg-clip-text text-transparent">

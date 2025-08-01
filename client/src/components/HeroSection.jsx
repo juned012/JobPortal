@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const stats = [
   { value: "1,200+", label: "Active Job Listings" },
   { value: "300+", label: "Hiring Companies" },
@@ -28,10 +29,10 @@ const HeroSection = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button className="bg-green-600 text-white cursor-pointer px-6 py-3 rounded font-semibold shadow hover:bg-green-700 transition">
-            Find Jobs
+            <Link to={"/jobs"}>Find Jobs</Link>
           </button>
           <button className="bg-white border border-green-600 text-green-600 cursor-pointer px-6 py-3 rounded font-semibold hover:bg-green-50 transition">
-            Get Started
+            <Link to={"/signup"}>Get Started</Link>
           </button>
         </div>
         {/* Infinite Marquee Stats */}

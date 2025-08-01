@@ -20,10 +20,13 @@ const ICONS = [
 
 const About = () => {
   return (
-    <section className="overflow-hidden min-h-[90vh] flex items-center justify-center pt-32 pb-20 bg-gradient-to-tr from-green-50 via-white to-green-100">
-      <div className="max-w-4xl mx-auto w-full bg-white   rounded-xl   p-8 md:p-12 flex flex-col items-center text-center">
+    <section className="overflow-hidden min-h-[90vh] flex items-center justify-center pt-12 pb-20 bg-gradient-to-tr from-green-50 via-white to-green-100">
+      <div className="max-w-4xl mx-auto w-full bg-white rounded-xl p-8 md:p-12 flex flex-col items-center text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-3">
-          <span className="bg-gradient-to-r from-green-600 via-green-400 to-green-600 bg-clip-text text-transparent">
+          <span
+            className="bg-gradient-to-r from-green-600 via-green-400
+           to-green-600 bg-clip-text text-transparent"
+          >
             About FindJob
           </span>
         </h2>

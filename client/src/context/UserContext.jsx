@@ -7,6 +7,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Signup new user
   const handleUserSignup = async (formData) => {
@@ -18,75 +19,70 @@ export const UserProvider = ({ children }) => {
       toast.success(res.data.message || "Account Created successfully");
       return true;
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 409) {
-          toast.error(error.response.data.message || "User already exists");
-        } else {
-          toast.error(
-            error.response.data?.message ||
-              `Signup failed with status ${error.response.status}`
-          );
-        }
-      } else if (error.request) {
-        toast.error("No response from server. Please try again later.");
-      } else {
-        toast.error("Error: " + error.message);
-      }
+      if (error.response?.status === 409)
+        toast.error(error.response.data.message || "User already exists");
+      else toast.error(error.response?.data?.message || "Signup failed");
       return false;
     }
   };
 
   // Login existing user
   const handleUserLogin = async (formData) => {
+    setLoading(true);
     try {
       const res = await axios.post(
         "http://localhost:5005/api/auth/login",
         formData
       );
+      const { user, token, message } = res.data;
 
-      const data = res.data;
+      setToken(token);
+      setUser(user);
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success(message || "Login successful!");
 
-      setToken(data.token);
-      setUser(data.user);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      toast.success(data.message || "Login successful!");
-      return true;
+      return { success: true, user };
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          toast.error(
-            error.response.data.message || "Invalid email or password"
-          );
-        } else {
-          toast.error(error.response.data.message || "Login failed");
-        }
-      } else {
-        toast.error("Network error or server not responding");
-      }
-      return false;
+      toast.error(error.response?.data?.message || "Login failed");
+      return { success: false, user: null };
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
-    if (storedToken) {
+    const storedUser = localStorage.getItem("user");
+    if (storedToken && storedUser) {
       setToken(storedToken);
-    }
-    if (storedUser) {
       setUser(JSON.parse(storedUser));
+    } else {
+      setToken("");
+      setUser(null);
     }
+    setLoading(false);
   }, []);
+
+  const handleUserLogout = () => {
+    setToken("");
+    setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logged out successfully");
+  };
 
   return (
     <UserContext.Provider
       value={{
         token,
         user,
+        loading,
         handleUserSignup,
         handleUserLogin,
+        handleUserLogout,
+        loading,
+        setLoading,
       }}
     >
       {children}
