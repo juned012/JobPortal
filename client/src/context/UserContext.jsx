@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
   const handleUserSignup = async (formData) => {
     try {
       const res = await axios.post(
-        "http://localhost:5005/api/auth/signup",
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/auth/signup`,
         formData
       );
       toast.success(res.data.message || "Account Created successfully");
@@ -31,7 +31,7 @@ export const UserProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5005/api/auth/login",
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/auth/login`,
         formData
       );
       const { user, token, message } = res.data;
@@ -77,7 +77,6 @@ export const UserProvider = ({ children }) => {
       value={{
         token,
         user,
-        loading,
         handleUserSignup,
         handleUserLogin,
         handleUserLogout,

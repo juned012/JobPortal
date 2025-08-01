@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import { User, Mail, ShieldCheck } from "lucide-react";
+import { User, Mail, ShieldCheck, LogOut } from "lucide-react";
 
 const Profile = () => {
-  const { user } = useContext(UserContext);
+  const { user, handleUserLogout } = useContext(UserContext);
 
   if (!user) {
     return (
@@ -37,6 +37,17 @@ const Profile = () => {
             <ShieldCheck className="text-green-500" />
             <span className="font-medium">Role:</span>
             <span className="capitalize">{user.role}</span>
+          </div>
+
+          <div className="flex justify-center items-center mt-5 ">
+            <button
+              onClick={handleUserLogout}
+              className="bg-red-500 hover:bg-red-600 transition-all duration-300 hover:scale-105
+             hover:translate-y-2 flex items-center gap-2 py-2 px-8 text-sm rounded-md cursor-pointer text-white"
+            >
+              <LogOut className="h-4 w-4" />
+              Logout
+            </button>
           </div>
         </div>
       </div>
