@@ -10,8 +10,7 @@ dbConnection();
 const app = express();
 app.use(
   cors({
-    origin: "https://jobportal-client-61gj.onrender.com",
-    credentials: true,
+    origin: "https://jobportal-client-lusj.onrender.com",
   })
 );
 app.use(express.json());
