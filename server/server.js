@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/job", jobRoutes);
 
-const PORT = 5005;
+const PORT = process.env.PORT || 5002;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
