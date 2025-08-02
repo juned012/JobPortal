@@ -89,6 +89,7 @@ export const UserProvider = ({ children }) => {
       toast.success("Job Created");
       return res.data;
     } catch (error) {
+      toast.error("Error while posting job");
       console.log("Error while posting job", error);
     }
   };
@@ -122,10 +123,8 @@ export const UserProvider = ({ children }) => {
       );
 
       setGetAllPost(response.data.jobs);
-      console.log(response.data.jobs);
     } catch (error) {
       toast.error("Failed to fetch jobs");
-      console.error("Error fetching jobs:", error);
     }
   };
 
@@ -143,7 +142,6 @@ export const UserProvider = ({ children }) => {
       toast.success("Job post deleted successfully");
     } catch (error) {
       toast.error("Failed to fetch jobs");
-      console.error("Error fetching jobs:", error);
     }
   };
 

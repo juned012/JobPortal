@@ -3,8 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import dbConnection from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-import jobPostRoutes from "./routes/jobPostRoutes.js";
-
+import jobRoutes from "./routes/jobRoutes.js";
 dotenv.config();
 dbConnection();
 
@@ -13,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/job", jobPostRoutes);
+app.use("/api/job", jobRoutes);
 
 const PORT = 5005;
 

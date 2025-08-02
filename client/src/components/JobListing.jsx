@@ -9,8 +9,6 @@ const JobListing = () => {
     handleGetAllJobPosts();
   }, []);
 
-  console.log(getAllPost);
-
   return (
     <section className="bg-gradient-to-tr from-green-50 via-white to-green-100 pt-12 pb-20 px-4">
       <div className="max-w-6xl mx-auto">
