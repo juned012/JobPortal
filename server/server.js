@@ -11,8 +11,12 @@ const app = express();
 app.use(
   cors({
     origin: "https://jobportal-client-lusj.onrender.com",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
