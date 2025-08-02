@@ -10,10 +10,8 @@ dbConnection();
 const app = express();
 app.use(
   cors({
-    origin: "https://jobportal-client-lusj.onrender.com",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: process.env.CLIENT_URI,
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
