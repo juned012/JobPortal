@@ -1,32 +1,33 @@
 import jwt from "jsonwebtoken";
+import UserModel from "../models/userModel.js";
 
-const verifyToken = (req, res, next) => {
-  let token;
-  const authHeader = req.headers.authorization || req.headers.Authorization;
+const verifyToken = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization || req.headers.Authorization;
 
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    token = authHeader.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({
-        message: "No token, authorization denied",
-      });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ message: "No token, authorization denied" });
     }
 
-    try {
-      const decode = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decode;
-      console.log("The decoded user is:", req.user);
-      next();
-    } catch (error) {
-      res.status(400).json({ message: "Token is not valid" });
+    const token = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await UserModel.findById(decoded.id).select("-password");
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
     }
-  } else {
-    if (!token) {
-      return res.status(401).json({
-        message: "No token, authorization denied",
-      });
-    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error("Auth error:", error);
+    res
+      .status(400)
+      .json({ message: "Token is not valid", error: error.message });
   }
 };
 

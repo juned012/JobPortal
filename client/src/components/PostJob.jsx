@@ -1,35 +1,41 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
 
 const PostJob = () => {
+  const { handleCreateJobPost } = useContext(UserContext);
+
   const [form, setForm] = useState({
     title: "",
     company: "",
     location: "",
+    locationType: "Remote",
     salary: "",
     type: "Full-Time",
     experience: "",
     description: "",
     requirements: "",
+    deadline: "",
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.title || !form.company || !form.description) {
+    if (!form.title || !form.company || !form.description || !form.deadline) {
       setError("Please fill in all required fields.");
       return;
     }
 
-    console.log("Job Posted:", form);
-    alert("Job posted successfully!");
+    await handleCreateJobPost(form);
+
     setForm({
       title: "",
       company: "",
       location: "",
+      locationType: "Remote",
       salary: "",
       type: "Full-Time",
       experience: "",
@@ -84,6 +90,20 @@ const PostJob = () => {
           </div>
 
           <div>
+            <label className="block mb-1 font-medium">Location Type</label>
+            <select
+              name="locationType"
+              value={form.locationType}
+              onChange={handleChange}
+              className="w-full border border-gray-300 px-4 py-2 rounded"
+            >
+              <option>Remote</option>
+              <option>On-site</option>
+              <option>Hybrid</option>
+            </select>
+          </div>
+
+          <div>
             <label className="block mb-1 font-medium">Salary (INR)</label>
             <input
               type="text"
@@ -119,6 +139,20 @@ const PostJob = () => {
               onChange={handleChange}
               className="w-full border border-gray-300 px-4 py-2 rounded"
               placeholder="e.g. 1-3 years"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-medium">
+              Application Deadline *
+            </label>
+            <input
+              type="date"
+              name="deadline"
+              value={form.deadline}
+              onChange={handleChange}
+              className="w-full border border-gray-300 px-4 py-2 rounded"
+              required
             />
           </div>
         </div>

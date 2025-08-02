@@ -5,8 +5,6 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
-import CompanyDetailPage from "./pages/CompanyDetailPage";
-import Companies from "./pages/Companies";
 import Jobs from "./pages/Jobs";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
@@ -18,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoute from "./components/GuestRoute";
+import PostJob from "./components/PostJob";
 
 const App = () => {
   return (
@@ -31,8 +30,6 @@ const App = () => {
         {/* Public routes */}
 
         <Route path="/jobs" element={<Jobs />} />
-        <Route path="/companies" element={<Companies />} />
-        <Route path="/company-detailed-page" element={<CompanyDetailPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
@@ -47,6 +44,7 @@ const App = () => {
         <Route element={<ProtectedRoute allowedRoles={["recruiter"]} />}>
           <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
           <Route path="/applicants" element={<Applicants />} />
+          <Route path="/create-job" element={<PostJob />} />
         </Route>
 
         {/* Protected routes: seeker */}

@@ -8,6 +8,8 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [getRecruiterPost, setGetRecruiterPost] = useState([]);
+  const [getAllPost, setGetAllPost] = useState([]);
 
   // Signup new user
   const handleUserSignup = async (formData) => {
@@ -72,6 +74,79 @@ export const UserProvider = ({ children }) => {
     toast.success("Logged out successfully");
   };
 
+  const handleCreateJobPost = async (formData) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/create-post`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      toast.success("Job Created");
+      return res.data;
+    } catch (error) {
+      console.log("Error while posting job", error);
+    }
+  };
+
+  const handleGetOnlyRecruiterPosts = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/recruiter/posts`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setGetRecruiterPost(res.data.jobs);
+    } catch (error) {
+      toast.error("Failed to fetch job posts.");
+    }
+  };
+
+  const handleGetAllJobPosts = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/get-all-posts`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setGetAllPost(response.data.jobs);
+      console.log(response.data.jobs);
+    } catch (error) {
+      toast.error("Failed to fetch jobs");
+      console.error("Error fetching jobs:", error);
+    }
+  };
+
+  const handleDeleteJobPost = async (id) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/delete-post/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      handleGetOnlyRecruiterPosts();
+      toast.success("Job post deleted successfully");
+    } catch (error) {
+      toast.error("Failed to fetch jobs");
+      console.error("Error fetching jobs:", error);
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -82,6 +157,12 @@ export const UserProvider = ({ children }) => {
         handleUserLogout,
         loading,
         setLoading,
+        handleCreateJobPost,
+        handleGetOnlyRecruiterPosts,
+        getRecruiterPost,
+        handleGetAllJobPosts,
+        getAllPost,
+        handleDeleteJobPost,
       }}
     >
       {children}
