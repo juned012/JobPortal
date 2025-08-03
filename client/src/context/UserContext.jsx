@@ -145,6 +145,28 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleUpdateJobPost = async (form, id) => {
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/update-post/${id}`,
+        form,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      toast.success("Job post updated successfully");
+      handleGetOnlyRecruiterPosts();
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      toast.error("Error while editing job post");
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -161,6 +183,7 @@ export const UserProvider = ({ children }) => {
         handleGetAllJobPosts,
         getAllPost,
         handleDeleteJobPost,
+        handleUpdateJobPost,
       }}
     >
       {children}

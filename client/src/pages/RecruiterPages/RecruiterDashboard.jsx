@@ -90,7 +90,9 @@ const RecruiterDashboard = () => {
                 </td>
                 <td className="py-2 space-x-2">
                   <button title="edit">
-                    <SquarePen className="h-5 w-5 text-green-500 cursor-pointer" />
+                    <Link to={`/edit-job-post/${job._id}`} title="Edit">
+                      <SquarePen className="h-5 w-5 text-green-500 cursor-pointer" />
+                    </Link>
                   </button>
                   <button
                     onClick={() => handleDeleteJobPost(job._id)}

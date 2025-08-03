@@ -116,3 +116,42 @@ export const deleteJobPost = async (req, res) => {
     });
   }
 };
+
+export const editJobpost = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const postId = req.params.id;
+    const updates = req.body;
+    const job = await JobModel.findById(postId);
+
+    if (!job) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Job post not found" });
+    }
+
+    if (job.postedBy.toString() !== userId.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to edit this job post",
+      });
+    }
+
+    const updatedJob = await JobModel.findByIdAndUpdate(postId, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Job post updated successfully",
+      job: updatedJob,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while updating post",
+      error: error.message,
+    });
+  }
+};

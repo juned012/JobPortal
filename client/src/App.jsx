@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoute from "./components/GuestRoute";
 import PostJob from "./components/PostJob";
+import EditJobPost from "./components/EditJobPost";
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
           <Route path="/applicants" element={<Applicants />} />
           <Route path="/create-job" element={<PostJob />} />
+          <Route path="/edit-job-post/:id" element={<EditJobPost />} />
         </Route>
 
         {/* Protected routes: seeker */}
