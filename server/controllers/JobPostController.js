@@ -155,3 +155,25 @@ export const editJobpost = async (req, res) => {
     });
   }
 };
+
+export const viewJobDetails = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+
+    const job = await JobModel.findById(jobId).populate(
+      "postedBy",
+      "username email"
+    );
+    res.status(200).json({
+      success: true,
+      message: "Job detailed fetch successfully",
+      job,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while fetching job post detailed",
+      error: error.message,
+    });
+  }
+};

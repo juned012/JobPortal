@@ -1,6 +1,8 @@
 import { CalendarDays, CircleDollarSign, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const JobCard = ({
+  _id,
   company,
   title,
   location,
@@ -13,18 +15,24 @@ const JobCard = ({
       className="bg-white rounded-xl border border-gray-100 shadow-md hover:shadow-lg 
     transition-all duration-300 p-6 relative"
     >
-      <div className="absolute top-4 right-4">
-        <p
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-green-300 via-green-400 to-blue-600 
+      <Link to={`/job-detailed/${_id}`}>
+        <div className="absolute top-4 right-4">
+          <p
+            className="w-14 h-14 rounded-full bg-gradient-to-br from-green-300 via-green-400 to-blue-600 
   text-white font-bold flex items-center justify-center shadow-inner"
-        >
-          {company.charAt(0).toUpperCase()}
-        </p>
-      </div>
+          >
+            {company.charAt(0).toUpperCase()}
+          </p>
+        </div>
+      </Link>
 
       <div className="mb-2">
         <p className="text-sm text-gray-500 font-medium">{company}</p>
-        <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+        <Link to={`/job-detailed/${_id}`}>
+          <h2 className="text-xl font-semibold text-gray-900 hover:underline">
+            {title}
+          </h2>
+        </Link>
       </div>
 
       <div className="flex items-center text-sm text-gray-600 gap-1 mb-2">

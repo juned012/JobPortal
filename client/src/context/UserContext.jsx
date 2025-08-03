@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [getRecruiterPost, setGetRecruiterPost] = useState([]);
   const [getAllPost, setGetAllPost] = useState([]);
+  const [singleJobPost, setSingleJobPost] = useState([]);
 
   // Signup new user
   const handleUserSignup = async (formData) => {
@@ -167,6 +168,25 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleViewJobDetail = async (id) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/job-details/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const fetchJob = res.data.job;
+      setSingleJobPost(fetchJob);
+      return fetchJob;
+    } catch (error) {
+      console.log(error);
+      toast.error("Error while fetching job detailed");
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -184,6 +204,8 @@ export const UserProvider = ({ children }) => {
         getAllPost,
         handleDeleteJobPost,
         handleUpdateJobPost,
+        handleViewJobDetail,
+        singleJobPost,
       }}
     >
       {children}

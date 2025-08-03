@@ -18,6 +18,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import GuestRoute from "./components/GuestRoute";
 import PostJob from "./components/PostJob";
 import EditJobPost from "./components/EditJobPost";
+import JobDetailedPage from "./pages/JobDetailedPage";
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/job-detailed/:id" element={<JobDetailedPage />} />
 
         <Route element={<GuestRoute />}>
           <Route path="/" element={<Home />} />
