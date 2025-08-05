@@ -10,20 +10,14 @@ const statusColors = {
 };
 
 const Applicants = () => {
-  const { fetchRecruiterApplications, recruiterApplications } =
+  const { fetchRecruiterApplications, recruiterApplications, isLoading } =
     useContext(UserContext);
-  const [loading, setLoading] = useState(true);
   const [isOpenPopUp, setIsOpenPopUp] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
-    const loadApplicants = async () => {
-      setLoading(true);
-      await fetchRecruiterApplications();
-      setLoading(false);
-    };
-    loadApplicants();
+    fetchRecruiterApplications();
   }, []);
 
   return (
@@ -36,10 +30,10 @@ const Applicants = () => {
           Job Applicants
         </span>
       </h2>
-      {loading ? (
-        <p className="text-center text-gray-500">
-          <ClipLoader color="#16A34A" size={35} speedMultiplier={2} />
-        </p>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-screen">
+          <ClipLoader size={50} color="#22c55e" />
+        </div>
       ) : recruiterApplications.length === 0 ? (
         <p className="text-center text-gray-500">No applicants found.</p>
       ) : (

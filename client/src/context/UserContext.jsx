@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
   const [singleJobPost, setSingleJobPost] = useState([]);
   const [seekerApplications, setSeekerApplications] = useState([]);
   const [recruiterApplications, setRecruiterApplications] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   // Signup new user
   const handleUserSignup = async (formData) => {
     try {
@@ -115,6 +115,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const handleGetAllJobPosts = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/get-all-posts`,
@@ -128,6 +129,8 @@ export const UserProvider = ({ children }) => {
       setGetAllPost(response.data.jobs);
     } catch (error) {
       toast.error("Failed to fetch jobs");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -212,6 +215,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const fetchSeekerApplications = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/applications`,
@@ -225,10 +229,13 @@ export const UserProvider = ({ children }) => {
       console.log(res.data.data);
     } catch (error) {
       toast.error("Error fetching seeker applications");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchRecruiterApplications = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get(
         `${
@@ -243,6 +250,8 @@ export const UserProvider = ({ children }) => {
       setRecruiterApplications(res.data.data);
     } catch (error) {
       toast.error("Error fetching recruiter applications");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -292,6 +301,7 @@ export const UserProvider = ({ children }) => {
         seekerApplications,
         recruiterApplications,
         handleUpdateApplicantStatus,
+        isLoading,
       }}
     >
       {children}
