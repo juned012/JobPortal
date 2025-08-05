@@ -11,6 +11,8 @@ export const UserProvider = ({ children }) => {
   const [getRecruiterPost, setGetRecruiterPost] = useState([]);
   const [getAllPost, setGetAllPost] = useState([]);
   const [singleJobPost, setSingleJobPost] = useState([]);
+  const [seekerApplications, setSeekerApplications] = useState([]);
+  const [recruiterApplications, setRecruiterApplications] = useState([]);
 
   // Signup new user
   const handleUserSignup = async (formData) => {
@@ -187,6 +189,62 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleApplyOnJob = async (id) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/apply/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(res.data.message || "Applied successfully!");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        return toast.error(
+          error.response.data?.message || "Already applied to this job"
+        );
+      }
+      toast.error("Error while applying job");
+    }
+  };
+
+  const fetchSeekerApplications = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_API_ENDPOINT}/job/applications`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setSeekerApplications(res.data.data || []);
+      console.log(res.data.data);
+    } catch (error) {
+      toast.error("Error fetching seeker applications");
+    }
+  };
+
+  const fetchRecruiterApplications = async () => {
+    try {
+      const res = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_API_ENDPOINT
+        }/job/recruiter/applications`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRecruiterApplications(res.data.data);
+    } catch (error) {
+      toast.error("Error fetching recruiter applications");
+    }
+  };
   return (
     <UserContext.Provider
       value={{
@@ -206,6 +264,11 @@ export const UserProvider = ({ children }) => {
         handleUpdateJobPost,
         handleViewJobDetail,
         singleJobPost,
+        handleApplyOnJob,
+        fetchSeekerApplications,
+        fetchRecruiterApplications,
+        seekerApplications,
+        recruiterApplications,
       }}
     >
       {children}

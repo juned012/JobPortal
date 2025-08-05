@@ -1,5 +1,8 @@
 import { CalendarDays, CircleDollarSign, MapPin } from "lucide-react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import { useState } from "react";
 
 const JobCard = ({
   _id,
@@ -9,7 +12,17 @@ const JobCard = ({
   salary,
   createdAt,
   locationType,
+  hasApplied,
 }) => {
+  const { handleApplyOnJob } = useContext(UserContext);
+
+  const [loading, setLoading] = useState(false);
+
+  const handleApply = async () => {
+    setLoading(true);
+    await handleApplyOnJob(_id);
+    setLoading(false);
+  };
   return (
     <div
       className="bg-white rounded-xl border border-gray-100 shadow-md hover:shadow-lg 
@@ -57,10 +70,11 @@ const JobCard = ({
       </div>
 
       <button
+        onClick={handleApply}
         className="w-full bg-gradient-to-l from-green-300 via-green-500 to-blue-500  
        text-white cursor-pointer py-2 rounded-md text-sm font-semibold transition duration-200"
       >
-        Apply Now
+        {loading ? "Applying..." : "Apply Now"}
       </button>
     </div>
   );

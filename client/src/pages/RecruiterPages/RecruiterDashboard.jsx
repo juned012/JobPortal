@@ -10,15 +10,24 @@ const RecruiterDashboard = () => {
     handleGetOnlyRecruiterPosts,
     getRecruiterPost,
     handleDeleteJobPost,
+    recruiterApplications,
+    fetchRecruiterApplications,
   } = useContext(UserContext);
 
   useEffect(() => {
     handleGetOnlyRecruiterPosts();
+    fetchRecruiterApplications();
   }, []);
-
+  const totalApplicants = recruiterApplications.reduce(
+    (acc, job) => acc + (job.applicants?.length || 0),
+    0
+  );
   const stats = [
     { label: "Job Posts", value: getRecruiterPost.length || 0 },
-    { label: "Applicants", value: getRecruiterPost.applicants?.length || 0 },
+    {
+      label: "Applicants",
+      value: totalApplicants,
+    },
     { label: "Interviews", value: 5 },
   ];
 

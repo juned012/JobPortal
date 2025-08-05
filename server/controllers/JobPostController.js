@@ -177,3 +177,87 @@ export const viewJobDetails = async (req, res) => {
     });
   }
 };
+
+export const applyJob = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const postId = req.params.id;
+
+    const job = await JobModel.findById(postId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const alreadyApplied = job.applicants.some(
+      (a) => a.userId.toString() === userId.toString()
+    );
+
+    if (alreadyApplied) {
+      return res.status(400).json({
+        success: false,
+        message: "You already applied to this job",
+      });
+    }
+
+    job.applicants.push({
+      userId,
+    });
+    await job.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Job applied successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while applying for job",
+      error: error.message,
+    });
+  }
+};
+
+export const getRecruiterApplications = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const jobs = await JobModel.find({ postedBy: userId })
+      .sort({ createdAt: -1 })
+      .populate("applicants.userId", "username email")
+      .select("title applicants");
+
+    res.status(200).json({
+      success: true,
+      message: "Recruiter's job applicants fetched successfully",
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching recruiter applications",
+      error: error.message,
+    });
+  }
+};
+
+export const getSeekerApplications = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const jobs = await JobModel.find({ "applicants.userId": userId }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Seeker applications fetched successfully",
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error while fetching your applications",
+      error: error.message,
+    });
+  }
+};
