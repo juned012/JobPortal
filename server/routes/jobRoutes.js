@@ -9,6 +9,7 @@ import {
   applyJob,
   getRecruiterApplications,
   getSeekerApplications,
+  updateApplicantStatus,
 } from "../controllers/JobPostController.js";
 import verifyToken from "./../middleware/authMiddleware.js";
 
@@ -23,5 +24,10 @@ routers.delete("/delete-post/:id", verifyToken, deleteJobPost);
 routers.put("/update-post/:id", verifyToken, editJobpost);
 routers.get("/job-details/:id", viewJobDetails);
 routers.post("/apply/:id", verifyToken, applyJob);
+routers.put(
+  "/update-applicant-status/:jobId/:applicantId",
+  verifyToken,
+  updateApplicantStatus
+);
 
 export default routers;

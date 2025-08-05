@@ -261,3 +261,50 @@ export const getSeekerApplications = async (req, res) => {
     });
   }
 };
+
+export const updateApplicantStatus = async (req, res) => {
+  try {
+    const { jobId, applicantId } = req.params;
+    const { status } = req.body;
+
+    if (
+      !["pending", "shortlisted", "interview", "selected", "rejected"].includes(
+        status.toLowerCase()
+      )
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid status value" });
+    }
+
+    const job = await JobModel.findById(jobId);
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    if (job.postedBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: "Unauthorized" });
+    }
+
+    const applicant = job.applicants.id(applicantId);
+    if (!applicant) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Applicant not found" });
+    }
+
+    applicant.status = status.toLowerCase();
+    await job.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Status updated", applicant });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error updating status",
+      error: error.message,
+    });
+  }
+};

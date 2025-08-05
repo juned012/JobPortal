@@ -18,25 +18,41 @@ const RecruiterDashboard = () => {
     handleGetOnlyRecruiterPosts();
     fetchRecruiterApplications();
   }, []);
+
   const totalApplicants = recruiterApplications.reduce(
     (acc, job) => acc + (job.applicants?.length || 0),
     0
   );
+
   const stats = [
     { label: "Job Posts", value: getRecruiterPost.length || 0 },
     {
       label: "Applicants",
       value: totalApplicants,
     },
-    { label: "Interviews", value: 5 },
+    {
+      label: "Interviews",
+      value: recruiterApplications.reduce((acc, job) => {
+        const count =
+          job.applicants?.filter(
+            (applicant) => applicant.status?.toLowerCase() === "interview"
+          ).length || 0;
+        return acc + count;
+      }, 0),
+    },
   ];
 
   return (
     <div className="max-w-6xl mx-auto pt-20 px-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Recruiter Dashboard
-        </h1>
+        <h2 className="text-3xl md:text-4xl font-bold mb-3">
+          <span
+            className="bg-gradient-to-r from-green-600 via-green-400
+           to-green-600 bg-clip-text text-transparent"
+          >
+            Recruiter Dashboard
+          </span>
+        </h2>
         <Link to={"/create-job"}>
           <button className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition">
             + Post New Job

@@ -245,6 +245,28 @@ export const UserProvider = ({ children }) => {
       toast.error("Error fetching recruiter applications");
     }
   };
+
+  const handleUpdateApplicantStatus = async (jobId, applicantId, status) => {
+    try {
+      await axios.put(
+        `${
+          import.meta.env.VITE_BACKEND_API_ENDPOINT
+        }/job/update-applicant-status/${jobId}/${applicantId}`,
+        { status: status.toLowerCase() },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      await fetchRecruiterApplications();
+      toast.success("Applicant status updated");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update applicant status");
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -269,6 +291,7 @@ export const UserProvider = ({ children }) => {
         fetchRecruiterApplications,
         seekerApplications,
         recruiterApplications,
+        handleUpdateApplicantStatus,
       }}
     >
       {children}
